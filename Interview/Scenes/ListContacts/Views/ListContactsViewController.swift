@@ -29,9 +29,9 @@ class ListContactsViewController: UIViewController, UITableViewDataSource, UITab
     }()
     
     var contacts = [Contact]()
-    var viewModel: ListContactsViewModel
+    var viewModel: ListContactsViewModelProtocol
     
-    init(viewModel: ListContactsViewModel) {
+    init(viewModel: ListContactsViewModelProtocol = ListContactsViewModel()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }

@@ -12,20 +12,6 @@ private let apiURL = "https://run.mocky.io/v3/d26d86ec-fb82-48a7-9c73-69e2cb7280
   }
 ]
 */
-protocol ListContactServiceProtocol {
-    func fetchContacts(completion: @escaping (Result<[Contact], APIError>) -> Void)
-}
-
-protocol URLSessionProtocol {
-    func fetchData(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void)
-}
-
-extension URLSession: URLSessionProtocol {
-    func fetchData(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
-        let dataTask = dataTask(with: url, completionHandler: completionHandler)
-        dataTask.resume()
-    }
-}
 
 class ListContactService: ListContactServiceProtocol {
     
