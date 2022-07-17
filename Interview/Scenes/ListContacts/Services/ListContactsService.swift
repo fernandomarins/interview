@@ -13,7 +13,7 @@ private let apiURL = "https://run.mocky.io/v3/d26d86ec-fb82-48a7-9c73-69e2cb7280
 ]
 */
 protocol ListContactServiceProtocol {
-    func fetchContacts(completion: @escaping ([Contact]?, Error?) -> Void)
+    func fetchContacts(completion: @escaping (Result<[Contact], Error>) -> Void)
 }
 
 class ListContactService: ListContactServiceProtocol {
@@ -26,24 +26,23 @@ class ListContactService: ListContactServiceProtocol {
         self.session = session
     }
     
-    func fetchContacts(completion: @escaping ([Contact]?, Error?) -> Void) {
+    func fetchContacts(completion: @escaping (Result<[Contact], Error>) -> Void) {
         guard let api = URL(string: apiURL) else {
             return
         }
         
-        let task = session.dataTask(with: api) { (data, response, error) in
+        session.dataTask(with: api) { (data, response, error) in
             guard let jsonData = data else {
                 return
             }
             
             do {
                 let decoded = try Contact.parseFromData(jsonData, type: Contact.self)
-                completion(decoded, nil)
+                completion(.success(decoded))
             } catch let error {
-                completion(nil, error)
+                completion(.failure(error))
             }
-        }
-        
-        task.resume()
+            
+        }.resume()
     }
 }
