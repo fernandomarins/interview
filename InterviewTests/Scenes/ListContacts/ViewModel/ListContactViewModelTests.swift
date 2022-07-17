@@ -2,12 +2,18 @@ import XCTest
 @testable import Interview
 
 class ListContactViewModelTests: XCTestCase {
+    
+    var sut: ListContactsViewModel!
 
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        super.setUp()
+        sut = ListContactsViewModel()
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        sut = nil
+        super.tearDown()
     }
+    
+//    func testHandle
 }

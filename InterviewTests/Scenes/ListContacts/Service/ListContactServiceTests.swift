@@ -2,13 +2,54 @@ import XCTest
 @testable import Interview
 
 class ListContactServiceTests: XCTestCase {
+    
+    var sut: ListContactService!
 
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        super.setUp()
+        
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        sut = nil
+        super.tearDown()
+    }
+    
+    func testShouldReturnOk() {
+        sut = ListContactService(session: ListContactServiceMock())
+        var result: Result<[Contact], APIError>?
+        
+        sut.fetchContacts {
+            result = $0
+        }
+        
+        switch result {
+        case .success(let contacts):
+            XCTAssertEqual(contacts[0].id, 2)
+        default:
+            XCTFail("Unexpected result")
+        }
+    }
+    
+    func testShouldReturnError() {
+        sut = ListContactService(session: ListContactServiceMockError())
+        var result: Result<[Contact], APIError>?
+        sut.fetchContacts {
+            result = $0
+        }
+        
+        switch result {
+        case .failure(let error):
+            XCTAssertEqual(error, APIError.networkError)
+        default:
+            XCTFail("Unexpected result")
+        }
+    }
+    
+    func testParseShouldBeOk() throws {
+        let data = mockData!
+        let decodedData = try Contact.parseFromData(data, type: Contact.self)
+        XCTAssertEqual(decodedData[0].id, 2)
     }
 }
 

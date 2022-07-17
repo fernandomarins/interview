@@ -96,7 +96,7 @@ class ListContactsViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let contato = contacts[indexPath.row - 1]
+        let contato = contacts[indexPath.row]
         
         guard UserIdsLegacy.isLegacy(id: contato.id) else {
             let alert = UIAlertController(title: "Você tocou em", message: "\(contato.name)", preferredStyle: .alert)

@@ -12,12 +12,14 @@ class ListContactsViewModel {
     
     func loadContacts(_ completion: @escaping ([Contact]?, Error?) -> Void) {
         self.completion = completion
-        service.fetchContacts { result in
+        service.fetchContacts { [weak self] result in
             switch result {
             case .success(let contacts):
-                self.handle(contacts, nil)
+//                self.handle(contacts, nil)
+                self?.completion?(contacts, nil)
             case .failure(let error):
-                self.handle(nil, error)
+                self?.completion?(nil, error)
+//                self.handle(nil, error)
             }
         }
     }
