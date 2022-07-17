@@ -29,9 +29,10 @@ class ListContactsViewController: UIViewController, UITableViewDataSource, UITab
     }()
     
     var contacts = [Contact]()
-    var viewModel: ListContactsViewModel!
+    var viewModel: ListContactsViewModel
     
-    init() {
+    init(viewModel: ListContactsViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -48,7 +49,6 @@ class ListContactsViewController: UIViewController, UITableViewDataSource, UITab
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = ListContactsViewModel()
         configureViews()
         
         navigationController?.title = "Lista de contatos"
@@ -67,9 +67,9 @@ class ListContactsViewController: UIViewController, UITableViewDataSource, UITab
         ])
     }
     
-    func isLegacy(contact: Contact) -> Bool {
-        return UserIdsLegacy.isLegacy(id: contact.id)
-    }
+//    func isLegacy(contact: Contact) -> Bool {
+//        return UserIdsLegacy.isLegacy(id: contact.id)
+//    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return contacts.count
@@ -82,14 +82,15 @@ class ListContactsViewController: UIViewController, UITableViewDataSource, UITab
         
         let contact = contacts[indexPath.row]
         cell.fullnameLabel.text = contact.name
+        cell.contactImage.load(urlString: contact.photoURL)
         
-        if let urlPhoto = URL(string: contact.photoURL) {
-            do {
-                let data = try Data(contentsOf: urlPhoto)
-                let image = UIImage(data: data)
-                cell.contactImage.image = image
-            } catch _ {}
-        }
+//        if let urlPhoto = URL(string: contact.photoURL) {
+//            do {
+//                let data = try Data(contentsOf: urlPhoto)
+//                let image = UIImage(data: data)
+//                cell.contactImage.image = image
+//            } catch _ {}
+//        }
         
         return cell
     }
@@ -97,7 +98,7 @@ class ListContactsViewController: UIViewController, UITableViewDataSource, UITab
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let contato = contacts[indexPath.row - 1]
         
-        guard isLegacy(contact: contato) else {
+        guard UserIdsLegacy.isLegacy(id: contato.id) else {
             let alert = UIAlertController(title: "Você tocou em", message: "\(contato.name)", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self.present(alert, animated: true)
@@ -124,6 +125,19 @@ class ListContactsViewController: UIViewController, UITableViewDataSource, UITab
                 self.contacts = contacts ?? []
                 self.tableView.reloadData()
                 self.activity.stopAnimating()
+            }
+        }
+    }
+}
+
+extension UIImageView {
+    func load(urlString: String) {
+        guard let url = URL(string: urlString) else { return }
+        DispatchQueue.global(qos: .userInteractive).async {
+            guard let data = try? Data(contentsOf: url) else { return }
+            guard let image = UIImage(data: data) else { return }
+            DispatchQueue.main.async {
+                self.image = image
             }
         }
     }

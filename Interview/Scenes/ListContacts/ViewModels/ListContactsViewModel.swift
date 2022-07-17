@@ -1,11 +1,14 @@
 import Foundation
 
 class ListContactsViewModel {
-    private let service = ListContactService()
+    
+    private let service: ListContactServiceProtocol
     
     private var completion: (([Contact]?, Error?) -> Void)?
     
-    init() { }
+    init(_ service: ListContactServiceProtocol = ListContactService.shared) {
+        self.service = service
+    }
     
     func loadContacts(_ completion: @escaping ([Contact]?, Error?) -> Void) {
         self.completion = completion
