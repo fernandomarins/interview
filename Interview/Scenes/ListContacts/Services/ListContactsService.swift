@@ -17,8 +17,6 @@ class ListContactService: ListContactServiceProtocol {
     
     let session: URLSessionProtocol
     
-    static let shared = ListContactService()
-    
     init(session: URLSessionProtocol = URLSession.shared) {
         self.session = session
     }

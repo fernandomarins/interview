@@ -1,28 +1,53 @@
 import Foundation
 
 protocol ListContactsViewModelProtocol {
-    func loadContacts(_ completion: @escaping ([Contact]?, APIError?) -> Void)
+    func loadContacts(completion: @escaping (APIError?) -> Void)
+    var contactsCellVieModel: [ContactCellViewModel] { get }
+    var reloadTableView: (() -> Void)? { get set }
 }
 
 class ListContactsViewModel: ListContactsViewModelProtocol {
     
     private let service: ListContactServiceProtocol
     
-    private var completion: (([Contact]?, APIError?) -> Void)?
+    var contacts = [Contact]()
+    var reloadTableView: (() -> Void)?
+    var contactsCellVieModel = [ContactCellViewModel]() {
+        didSet {
+            reloadTableView?()
+        }
+    }
     
-    init(_ service: ListContactServiceProtocol = ListContactService.shared) {
+    init(_ service: ListContactServiceProtocol = ListContactService()) {
         self.service = service
     }
     
-    func loadContacts(_ completion: @escaping ([Contact]?, APIError?) -> Void) {
-        self.completion = completion
+    func loadContacts(completion: @escaping (APIError?) -> Void) {
         service.fetchContacts { [weak self] result in
             switch result {
             case .success(let contacts):
-                self?.completion?(contacts, nil)
+                self?.convertDataFromModel(contacts: contacts)
+                completion(nil)
             case .failure(let error):
-                self?.completion?(nil, error)
+                completion(error)
             }
         }
+    }
+    
+    private func convertDataFromModel(contacts: [Contact]) {
+        self.contacts = contacts
+        var vms = [ContactCellViewModel]()
+        for contact in contacts {
+            vms.append(createCellModel(contact: contact))
+        }
+        contactsCellVieModel = vms
+    }
+    
+    private func createCellModel(contact: Contact) -> ContactCellViewModel {
+        let id = contact.id
+        let name = contact.name
+        let photoUrl = contact.photoURL
+        
+        return ContactCellViewModel(id: id, name: name, photoURL: photoUrl)
     }
 }

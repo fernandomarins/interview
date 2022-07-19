@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		555632192886C32200FF0926 /* ContactCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555632182886C32100FF0926 /* ContactCellViewModel.swift */; };
 		558096D52884826C0062262A /* ListContactServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558096D42884826C0062262A /* ListContactServiceMock.swift */; };
 		558096D7288492630062262A /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558096D6288492630062262A /* Protocols.swift */; };
 		558096D928849A630062262A /* ListContactViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558096D828849A620062262A /* ListContactViewControllerTests.swift */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		555632182886C32100FF0926 /* ContactCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCellViewModel.swift; sourceTree = "<group>"; };
 		558096D42884826C0062262A /* ListContactServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListContactServiceMock.swift; sourceTree = "<group>"; };
 		558096D6288492630062262A /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		558096D828849A620062262A /* ListContactViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListContactViewControllerTests.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				6AB24DF123EB554300530BA5 /* ListContactsViewModel.swift */,
+				555632182886C32100FF0926 /* ContactCellViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 				6AB24DEF23EB552100530BA5 /* Contact.swift in Sources */,
 				6AB24DEA23EB54E800530BA5 /* ListContactsViewController.swift in Sources */,
 				6AB24DF523EB556700530BA5 /* ListContactsService.swift in Sources */,
+				555632192886C32200FF0926 /* ContactCellViewModel.swift in Sources */,
 				6AB24DC023EB546D00530BA5 /* AppDelegate.swift in Sources */,
 				6AB24DF223EB554300530BA5 /* ListContactsViewModel.swift in Sources */,
 				6AB24DF823EB558D00530BA5 /* ContactCell.swift in Sources */,
